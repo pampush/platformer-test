@@ -21,39 +21,35 @@ class Prize {
     }
 
     for (const tileSprite of this.sprites) {
-      ee.once("rollSecret", (id) => {
+      ee.on("rollSecret", (id) => {
         if (id !== tileSprite.getData("id")) return;
+        this.enableOverlapWith(playerSprite, tileSprite);
         this.ee.emit("attachCollider", tileSprite);
-
         this.scene.tweens.add({
           targets: tileSprite,
           ease: "Power1",
-          y: "-=16",
+          y: "-=32",
           duration: 500,
           //onComplete: () => tileSprite.destroy(),
         });
 
-        this.enableOverlapWith(playerSprite);
         //tileSprite.setY(this.prizeObjects[0].y - 32);
       });
     }
   }
 
-  enableOverlapWith(gameObject) {
+  enableOverlapWith(gameObject, tileSprite) {
     this.player = gameObject;
-    for (const tileSprite of this.sprites) {
-      this.scene.physics.add.existing(tileSprite, false);
-      //this.scene.physics.add.collider(tileSprite, this.secretBlock);
+    this.scene.physics.add.existing(tileSprite, false);
+    //this.scene.physics.add.collider(tileSprite, this.secretBlock);
 
-      this.scene.physics.add.overlap(
-        tileSprite,
-        gameObject,
-        () => this.collect(tileSprite),
-        null,
-        this
-      );
-    }
-    return this;
+    this.scene.physics.add.overlap(
+      tileSprite,
+      gameObject,
+      () => this.collect(tileSprite),
+      null,
+      this
+    );
   }
 
   collect(tileSprite) {

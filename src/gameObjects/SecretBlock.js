@@ -15,7 +15,7 @@ class SecretBlock {
         .setData({ id: secretObject.name });
     }
 
-    this.ee.once("attachCollider", (prizeSprite) => {
+    this.ee.on("attachCollider", (prizeSprite) => {
       this.scene.physics.add.collider(
         prizeSprite,
         this.sprites[prizeSprite.getData("id")]
@@ -39,9 +39,10 @@ class SecretBlock {
   }
 
   rollSecret(tileSprite, collider) {
-    const secretCoordinates = this.scene.tileset.texCoordinates[1];
+    //if(tileSprite.getData('id') !== )
+    //const secretCoordinates = this.scene.tileset.texCoordinates[1];
     if (this.scene.player.sprite.body.touching.up) {
-      tileSprite.setTilePosition(secretCoordinates.x, secretCoordinates.y);
+      //tileSprite.setTilePosition(secretCoordinates.x, secretCoordinates.y);
       //collider.destroy();
       this.ee.emit("rollSecret", tileSprite.getData("id"));
     }
