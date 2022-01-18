@@ -6,6 +6,7 @@ import Blocks from "../gameObjects/Blocks";
 
 import tiles from "../config/tiles";
 import generateAnimations from "../config/animations";
+import SecretBlock from "../gameObjects/SecretBlock";
 
 // eslint-disable-next-line no-undef
 class Game extends Phaser.Scene {
@@ -45,7 +46,8 @@ class Game extends Phaser.Scene {
     this.goombas = new Goomba(this).collideWith(this.platform);
     this.coins = new Coin(this).collideWith(this.player.sprite);
     this.flag = new Flag(this);
-    this.blocks = new Blocks(this);
+    this.blocks = new Blocks(this).collideWith(this.player.sprite);
+    //this.prize = new SecretBlock(this);
 
     this.inputs = this.input.keyboard.createCursorKeys();
   }
