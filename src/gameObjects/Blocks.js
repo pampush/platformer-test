@@ -2,7 +2,7 @@ class Blocks {
   constructor(scene) {
     this.scene = scene;
     this.sprites = [];
-
+    this.throttleDestroyBlock = false;
     // this.group = this.scene.physics.add.staticGroup({
     //   key: "shroom",
     // });
@@ -13,7 +13,6 @@ class Blocks {
 
     this.scene = scene;
     for (const flagObject of this.flagObjects) {
-      console.log(flagObject);
       this.sprites.push(
         scene.add
           .tileSprite(flagObject.x, flagObject.y, 16, 16, "tiles")
@@ -27,9 +26,26 @@ class Blocks {
     this.player = gameObject;
     for (const tileSprite of this.sprites) {
       this.scene.physics.add.existing(tileSprite, true);
-      this.scene.physics.add.collider(tileSprite, gameObject);
+      this.scene.physics.add.collider(
+        tileSprite,
+        gameObject,
+        () => this.destroyBlock(tileSprite),
+        null,
+        this
+      );
     }
     return this;
+  }
+
+  destroyBlock(tileSprite) {
+    // if two or more collides occur simulteniously
+    if (this.throttleDestroyBlock) return;
+    setTimeout(() => (this.throttleDestroyBlock = false), 100);
+    this.throttleDestroyBlock = true;
+
+    if (this.scene.player.sprite.body.touching.up) {
+      tileSprite.destroy();
+    }
   }
 
   update() {}

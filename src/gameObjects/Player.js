@@ -1,9 +1,10 @@
 class Player {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, ee) {
     const useDeadZone = false;
 
     this.scene = scene;
-
+    this.ee = ee;
+    
     // By using an object in tiled, you could also dynamically define the spawn point
     this.sprite = scene.physics.add.sprite(x, y, "atlas");
     //.setScale(2);

@@ -7,6 +7,7 @@ import Blocks from "../gameObjects/Blocks";
 import tiles from "../config/tiles";
 import generateAnimations from "../config/animations";
 import SecretBlock from "../gameObjects/SecretBlock";
+import Prize from "../gameObjects/Prize";
 
 // eslint-disable-next-line no-undef
 class Game extends Phaser.Scene {
@@ -27,6 +28,7 @@ class Game extends Phaser.Scene {
       "./assets/json/mario-atlas.json"
     );
 
+    this.ee = this.events;
     this.load.on("complete", () => {
       generateAnimations(this);
     });
@@ -42,12 +44,15 @@ class Game extends Phaser.Scene {
     this.map.createStaticLayer("background", this.tileset, 0, 0);
     this.platform.setCollisionByExclusion(noCollisionTiles, true);
 
-    this.player = new Player(this, 25, 400).collideWith(this.platform);
+    this.player = new Player(this, 25, 400, this.ee).collideWith(this.platform);
     this.goombas = new Goomba(this).collideWith(this.platform);
     this.coins = new Coin(this).collideWith(this.player.sprite);
     this.flag = new Flag(this);
     this.blocks = new Blocks(this).collideWith(this.player.sprite);
-    //this.prize = new SecretBlock(this);
+    this.secret = new SecretBlock(this, this.ee).collideWith(
+      this.player.sprite
+    );
+    this.prize = new Prize(this, this.ee, this.player.sprite, this.secret);
 
     this.inputs = this.input.keyboard.createCursorKeys();
   }

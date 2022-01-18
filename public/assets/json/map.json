@@ -67,8 +67,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":640.005776515152,
-                 "y":335.988068181818
+                 "x":640.009816919192,
+                 "y":352.147664141414
                 }, 
                 {
                  "gid":5,
@@ -79,31 +79,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":655.999571805007,
-                 "y":335.989300614844
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":8,
-         "name":"prize",
-         "objects":[
-                {
-                 "gid":441,
-                 "height":16,
-                 "id":28,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":672.002717391304,
-                 "y":335.991230237154
+                 "x":656.02987483531,
+                 "y":352.14889657444
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -261,12 +238,58 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"secret",
+         "objects":[
+                {
+                 "gid":1,
+                 "height":16,
+                 "id":31,
+                 "name":"1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":672.03125,
+                 "y":351.987215909091
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":11,
+         "name":"prize",
+         "objects":[
+                {
+                 "gid":441,
+                 "height":16,
+                 "id":32,
+                 "name":"1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":672.125,
+                 "y":352
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":31,
+ "nextlayerid":12,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
