@@ -4,7 +4,7 @@ import Game from "./scenes/Game.js";
 import GameOver from "./scenes/GameOver.js";
 
 import { useEffect } from "react";
-
+import "./App.css";
 const config = {
   width: 640,
   height: 480,

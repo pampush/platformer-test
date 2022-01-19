@@ -3,7 +3,7 @@ class SecretBlock {
     this.scene = scene;
     this.sprites = {};
     this.ee = ee;
-
+    this.wasCollided = {};
     this.secretObjects = scene.map.getObjectLayer("secret").objects;
 
     const secretCoordinates = scene.tileset.texCoordinates[2]; // 962 is the tile index in tiled for the secret
@@ -24,7 +24,11 @@ class SecretBlock {
       this.collider = this.scene.physics.add.collider(
         tileSprite,
         gameObject,
-        () => this.rollSecret(tileSprite, this.collider),
+        () => {
+          if (this.wasCollided[tileSprite.getData("id")]) return;
+          this.rollSecret(tileSprite, this.collider);
+          console.log(tileSprite.getData("id"));
+        },
         null,
         this
       );
@@ -37,7 +41,7 @@ class SecretBlock {
     const secretCoordinates = this.scene.tileset.texCoordinates[1];
     if (this.scene.player.sprite.body.touching.up) {
       tileSprite.setTilePosition(secretCoordinates.x, secretCoordinates.y);
-      //collider.destroy();
+      this.wasCollided[tileSprite.getData("id")] = true;
       this.ee.emit("rollSecret", tileSprite.getData("id"));
     }
   }

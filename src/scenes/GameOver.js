@@ -5,9 +5,13 @@ class GameOver extends Phaser.Scene {
   }
 
   create() {
+    const screenCenterX =
+      this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    const screenCenterY =
+      this.cameras.main.worldView.y + this.cameras.main.height / 2;
     this.cameras.main.setBackgroundColor("#000");
-
-    document.getElementsByClassName("game-over")[0].classList.add("visible");
+    this.add.text(screenCenterX, screenCenterY, "GAME OVER").setOrigin(0.5);
+    //document.getElementsByClassName("game-over")[0].classList.add("visible");
   }
 }
 

@@ -13,8 +13,14 @@ class Prize {
     for (const prizeObject of this.prizeObjects) {
       this.sprites.push(
         scene.add
-          .tileSprite(prizeObject.x, prizeObject.y, 16, 16, "tiles")
-          .setOrigin(0, 1)
+          .tileSprite(
+            prizeObject.x,
+            prizeObject.y - prizeObject.width,
+            16,
+            16,
+            "tiles"
+          )
+          .setOrigin(0)
           .setDepth(-1)
           .setTilePosition(prizeCoordinates.x, prizeCoordinates.y)
           .setData({ id: prizeObject.name })
@@ -32,7 +38,7 @@ class Prize {
           targets: tileSprite,
           ease: "Power1",
           y: "-=32",
-          duration: 500,
+          duration: 100,
           onComplete: () => {
             this.enableOverlapWith(playerSprite, tileSprite);
             this.ee.emit("attachCollider", tileSprite);
@@ -58,13 +64,14 @@ class Prize {
 
   collect(tileSprite) {
     if (!tileSprite.body.touching.none) {
-      //tileSprite.body.setEnable(false);
+      tileSprite.body.setEnable(false);
+
       this.scene.tweens.add({
         targets: tileSprite,
         ease: "Power1",
         scaleX: 0,
         scaleY: 0,
-        duration: 500,
+        duration: 100,
         onComplete: () => tileSprite.destroy(),
       });
     }
