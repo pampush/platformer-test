@@ -6,6 +6,7 @@ class Prize {
     this.playerSprite = playerSprite;
     this.gameObjectWithBody = {};
     this.secretBlock = secret;
+    this.isPhysicsEnabled = {};
 
     this.prizeObjects = scene.map.getObjectLayer("prize").objects;
     const prizeCoordinates = scene.tileset.texCoordinates[440];
@@ -20,20 +21,24 @@ class Prize {
       );
     }
 
+    //this.group = this.scene.physics.add.group(...this.sprites);
+
     for (const tileSprite of this.sprites) {
       ee.on("rollSecret", (id) => {
         if (id !== tileSprite.getData("id")) return;
-        this.enableOverlapWith(playerSprite, tileSprite);
-        this.ee.emit("attachCollider", tileSprite);
+        tileSprite.setDepth(1);
+
         this.scene.tweens.add({
           targets: tileSprite,
           ease: "Power1",
           y: "-=32",
           duration: 500,
-          //onComplete: () => tileSprite.destroy(),
+          onComplete: () => {
+            this.enableOverlapWith(playerSprite, tileSprite);
+            this.ee.emit("attachCollider", tileSprite);
+            this.isPhysicsEnabled[id] = true;
+          },
         });
-
-        //tileSprite.setY(this.prizeObjects[0].y - 32);
       });
     }
   }
@@ -41,7 +46,6 @@ class Prize {
   enableOverlapWith(gameObject, tileSprite) {
     this.player = gameObject;
     this.scene.physics.add.existing(tileSprite, false);
-    //this.scene.physics.add.collider(tileSprite, this.secretBlock);
 
     this.scene.physics.add.overlap(
       tileSprite,
@@ -64,6 +68,37 @@ class Prize {
         onComplete: () => tileSprite.destroy(),
       });
     }
+  }
+
+  update() {
+    for (const tileSprite of this.sprites) {
+      if (this.isPhysicsEnabled[tileSprite.getData("id")]) {
+        if (tileSprite.body.blocked.right) {
+          tileSprite.body.direction = "LEFT";
+        }
+
+        if (tileSprite.body.blocked.left) {
+          tileSprite.body.direction = "RIGHT";
+        }
+
+        if (tileSprite.body.direction === "RIGHT") {
+          tileSprite.body.setVelocityX(100);
+        } else {
+          tileSprite.body.setVelocityX(-100);
+        }
+      }
+    }
+  }
+
+  moveTile(tileSprite) {
+    let direction = -1;
+    return {
+      move: () => {
+        if (direction > 0) tileSprite.body.setVelocityX(100);
+        else tileSprite.body.setVelocityX(-100);
+      },
+      setDirection: (value) => (direction = value),
+    };
   }
 }
 

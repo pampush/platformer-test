@@ -53,6 +53,14 @@ class Game extends Phaser.Scene {
       this.player.sprite
     );
     this.prize = new Prize(this, this.ee, this.player.sprite, this.secret);
+ 
+    this.ee.on("attachCollider", (tileSprite) => {
+      this.physics.add.collider(tileSprite, [
+        this.platform,
+        ...this.blocks.sprites,
+        ...Object.values(this.secret.sprites),
+      ]);
+    });
 
     this.inputs = this.input.keyboard.createCursorKeys();
   }
@@ -61,6 +69,7 @@ class Game extends Phaser.Scene {
     this.player.update(this.inputs);
     this.goombas.update();
     this.coins.update();
+    this.prize.update();
   }
 }
 
