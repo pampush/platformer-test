@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/platformer-test/static/css/main.0ec0472d.css",
+    "main.js": "/platformer-test/static/js/main.e894112f.js",
+    "static/js/787.3d290385.chunk.js": "/platformer-test/static/js/787.3d290385.chunk.js",
+    "index.html": "/platformer-test/index.html",
+    "main.0ec0472d.css.map": "/platformer-test/static/css/main.0ec0472d.css.map",
+    "main.e894112f.js.map": "/platformer-test/static/js/main.e894112f.js.map",
+    "787.3d290385.chunk.js.map": "/platformer-test/static/js/787.3d290385.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0ec0472d.css",
+    "static/js/main.e894112f.js"
+  ]
+}
