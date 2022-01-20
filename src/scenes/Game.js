@@ -8,11 +8,13 @@ import tiles from "../config/tiles";
 import generateAnimations from "../config/animations";
 import SecretBlock from "../gameObjects/SecretBlock";
 import Prize from "../gameObjects/Prize";
+import Castle from "../gameObjects/Castle";
 
 // eslint-disable-next-line no-undef
 class Game extends Phaser.Scene {
   constructor() {
     super("Game");
+    this.score = 0;
   }
 
   // Tileset by https://www.deviantart.com/thecrushedjoycon/art/Super-Mario-Bros-Mega-Tileset-Ver-2-842092790
@@ -35,25 +37,27 @@ class Game extends Phaser.Scene {
   }
 
   create() {
+    this.clear();
+
     const noCollisionTiles = [tiles.EMPTY, tiles.FLAG_LEFT];
 
     this.map = this.make.tilemap({ key: "map" });
     this.tileset = this.map.addTilesetImage("map-tileset", "tiles");
-    this.platform = this.map.createStaticLayer("platform", this.tileset, 0, 0);
+    this.platform = this.map.createLayer("platform", this.tileset, 0, 0);
 
-    this.map.createStaticLayer("background", this.tileset, 0, 0);
+    this.map.createLayer("background", this.tileset, 0, 0);
+
     this.platform.setCollisionByExclusion(noCollisionTiles, true);
-
-    this.player = new Player(this, 25, 400, this.ee).collideWith(this.platform);
-    this.goombas = new Goomba(this).collideWith(this.platform);
-    this.coins = new Coin(this).collideWith(this.player.sprite);
-    this.flag = new Flag(this);
+    this.player = new Player(this, 25, 400).collideWith(this.platform);
+    this.goombas = new Goomba(this, this.ee).collideWith(this.platform);
+    this.coins = new Coin(this, this.ee).collideWith(this.player.sprite);
+    //this.flag = new Flag(this);
     this.blocks = new Blocks(this).collideWith(this.player.sprite);
     this.secret = new SecretBlock(this, this.ee).collideWith(
       this.player.sprite
     );
     this.prize = new Prize(this, this.ee, this.player.sprite, this.secret);
- 
+
     this.ee.on("attachCollider", (tileSprite) => {
       this.physics.add.collider(tileSprite, [
         this.platform,
@@ -62,6 +66,34 @@ class Game extends Phaser.Scene {
       ]);
     });
 
+    this.ee.on("increaseScore", () => {
+      this.score++;
+
+      if (this.score === 10) {
+        console.log("win");
+        this.ee.emit("win");
+      }
+    });
+
+    this.ee.on("GameOver", () => {
+      this.time.addEvent({
+        delay: 1500,
+        loop: false,
+        callback: () => {
+          this.scene.start("GameOver", { score: this.score, game: this.scene });
+        },
+      });
+    });
+
+    this.ee.on("win", () => {
+      this.castle = new Castle(this);
+    });
+
+    this.scoreText = this.add.text(10, 10, `score: ${this.score}`, {
+      color: "#000",
+    });
+    this.scoreText.fixedToCamera = true;
+    this.scoreText.setScrollFactor(0);
     this.inputs = this.input.keyboard.createCursorKeys();
   }
 
@@ -70,6 +102,14 @@ class Game extends Phaser.Scene {
     this.goombas.update();
     this.coins.update();
     this.prize.update();
+    this.scoreText.setText(`score: ${this.score}`);
+  }
+
+  clear() {
+    this.score = 0;
+    this.ee.off("attachCollider");
+    this.ee.off("increaseScore");
+    this.ee.off("GameOver");
   }
 }
 

@@ -32,12 +32,7 @@ function App() {
   }, []);
   return (
     <>
-      <div id="mario">
-        <div className="game-over">Game Over</div>
-        <div class="score">
-          Score: <span class="score-amount">0</span>
-        </div>
-      </div>
+      <div id="mario"></div>
     </>
   );
 }

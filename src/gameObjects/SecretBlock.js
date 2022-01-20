@@ -27,7 +27,6 @@ class SecretBlock {
         () => {
           if (this.wasCollided[tileSprite.getData("id")]) return;
           this.rollSecret(tileSprite, this.collider);
-          console.log(tileSprite.getData("id"));
         },
         null,
         this
@@ -37,7 +36,6 @@ class SecretBlock {
   }
 
   rollSecret(tileSprite, collider) {
-    //if(tileSprite.getData('id') !== )
     const secretCoordinates = this.scene.tileset.texCoordinates[1];
     if (this.scene.player.sprite.body.touching.up) {
       tileSprite.setTilePosition(secretCoordinates.x, secretCoordinates.y);

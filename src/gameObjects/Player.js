@@ -1,15 +1,18 @@
 class Player {
-  constructor(scene, x, y, ee) {
+  constructor(scene, x, y) {
     const useDeadZone = true;
 
     this.scene = scene;
-    this.ee = ee;
+    this.ee = this.scene.ee;
 
     // By using an object in tiled, you could also dynamically define the spawn point
-    this.sprite = scene.physics.add.sprite(x, y, "atlas").setScale(1.25);
+    this.sprite = scene.physics.add
+      .sprite(x, y, "atlas")
+      .setScale(1.25)
+      .setDepth(10);
 
-    this.sprite.setCollideWorldBounds(true);
     this.sprite.isDed = false;
+    this.sprite.setCollideWorldBounds(true);
 
     scene.cameras.main
       .setBounds(0, 0, scene.map.widthInPixels, scene.map.heightInPixels)
@@ -54,7 +57,6 @@ class Player {
         this.sprite.play("run", true);
 
       this.reFollowPlayer();
-      //this.scene.cameras.main.stopFollow(this.sprite);
     } else if (input.right.isDown) {
       this.sprite.setVelocityX(200).setFlipX(false);
       this.sprite.body.onFloor() &&
@@ -80,6 +82,7 @@ class Player {
     this.sprite.setVelocity(0, -350);
     this.sprite.play("die", true);
     this.sprite.setCollideWorldBounds(false);
+    this.sprite.body.setEnable(false);
   }
 }
 

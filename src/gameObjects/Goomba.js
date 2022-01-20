@@ -1,7 +1,8 @@
 import increaseScore from "../ui/increaseScore";
 
 class Goomba {
-  constructor(scene) {
+  constructor(scene, ee) {
+    this.ee = ee;
     this.scene = scene;
     this.goombas = this.scene.physics.add.group();
     this.collider = this.scene.physics.add.collider(
@@ -68,9 +69,7 @@ class Goomba {
     this.scene.physics.world.removeCollider(this.scene.player.collider);
     this.scene.physics.world.removeCollider(this.collider);
 
-    setTimeout(() => {
-      this.scene.scene.start("GameOver");
-    }, 1500);
+    this.ee.emit("GameOver");
   }
 
   die() {
@@ -80,7 +79,7 @@ class Goomba {
         goomba.play("goombaDie", true);
         goomba.on("animationcomplete", () => goomba.destroy());
 
-        increaseScore(0.5);
+        //increaseScore(0.5);
 
         this.scene.player.sprite.setVelocity(0, -350);
         this.scene.player.sprite.play("jump");

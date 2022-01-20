@@ -14,13 +14,13 @@ class Prize {
       this.sprites.push(
         scene.add
           .tileSprite(
-            prizeObject.x,
-            prizeObject.y - prizeObject.width,
+            prizeObject.x + prizeObject.width / 2,
+            prizeObject.y - prizeObject.height / 2,
             16,
             16,
             "tiles"
           )
-          .setOrigin(0)
+          .setOrigin(0.5)
           .setDepth(-1)
           .setTilePosition(prizeCoordinates.x, prizeCoordinates.y)
           .setData({ id: prizeObject.name })
@@ -38,7 +38,7 @@ class Prize {
           targets: tileSprite,
           ease: "Power1",
           y: "-=32",
-          duration: 100,
+          duration: 200,
           onComplete: () => {
             this.enableOverlapWith(playerSprite, tileSprite);
             this.ee.emit("attachCollider", tileSprite);
@@ -71,9 +71,11 @@ class Prize {
         ease: "Power1",
         scaleX: 0,
         scaleY: 0,
-        duration: 100,
+        duration: 200,
         onComplete: () => tileSprite.destroy(),
       });
+
+      this.ee.emit("increaseScore");
     }
   }
 
@@ -95,17 +97,6 @@ class Prize {
         }
       }
     }
-  }
-
-  moveTile(tileSprite) {
-    let direction = -1;
-    return {
-      move: () => {
-        if (direction > 0) tileSprite.body.setVelocityX(100);
-        else tileSprite.body.setVelocityX(-100);
-      },
-      setDirection: (value) => (direction = value),
-    };
   }
 }
 
